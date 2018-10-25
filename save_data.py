@@ -1,10 +1,30 @@
+"v1.1"
+
+
 from zipfile import ZipFile
 import os
 import datetime
 import time
 
 
+def count_ignore_character(name):
+    # 计算路径中的无用字符数量
+    count = 0
+    for i in name:
+        if i == ' ' or i == '.':
+            count += 1
+    return count
+
+
+def is_exists(name):
+    # 检查路径是否可用
+    directory = r'.\{}'.format(name)
+    exists = os.path.exists(directory.strip())
+    return exists, directory
+
+
 def save_path():
+    # 保存第一次输入的路径，并在下一次开启程序时调用
     try:
         with open('path.txt', 'r') as f:
             directory = f.read()
@@ -12,14 +32,16 @@ def save_path():
 
     except Exception:
         name = input('Please input the name which you want to zip:\n')
-        directory = r'.\{}'.format(name)
 
-        isExists = os.path.exists(directory.strip())
-        while name is None or not isExists:
-            print('The path IS NOT available! Please input the right name!')
-            name = input()
-            directory = r'.\{}'.format(name)
-            isExists = os.path.exists(directory.strip())
+        n = count_ignore_character(name)
+
+        path_exists, directory = is_exists(name)
+
+        while name == '' or not path_exists or n == len(name):
+            name = input('The path IS NOT available! Please input the right name!\n')
+            n = count_ignore_character(name)
+
+            path_exists, directory = is_exists(name)
 
         with open('path.txt', 'w') as f:
             f.write(directory)
