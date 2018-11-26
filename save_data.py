@@ -1,10 +1,17 @@
-"v1.1"
+"""
+v1.2
+import方面进行优化，优化打包后大小
+try部分的错误类型判断更为精确
+
+v1.1
+添加了判断路径中的无用字符
+"""
 
 
 from zipfile import ZipFile
-import os
-import datetime
-import time
+from os import path, walk
+from datetime import date
+from time import sleep
 
 
 def count_ignore_character(name):
@@ -19,7 +26,7 @@ def count_ignore_character(name):
 def is_exists(name):
     # 检查路径是否可用
     directory = r'.\{}'.format(name)
-    exists = os.path.exists(directory.strip())
+    exists = path.exists(directory.strip())
     return exists, directory
 
 
@@ -30,15 +37,15 @@ def save_path():
             directory = f.read()
         return directory
 
-    except Exception:
-        name = input('Please input the name which you want to zip:\n')
+    except FileNotFoundError:
+        name = input('Please input the file name which you want to zip:\n')
 
         n = count_ignore_character(name)
 
         path_exists, directory = is_exists(name)
 
         while name == '' or not path_exists or n == len(name):
-            name = input('The path IS NOT available! Please input the right name!\n')
+            name = input('The path IS NOT available! Please input the right file name!\n')
             n = count_ignore_character(name)
 
             path_exists, directory = is_exists(name)
@@ -52,17 +59,17 @@ def get_all_file_paths(directory):
     file_paths = []
 
     # 把所有的文件夹以及子文件夹、以及文件全部搞出来
-    for root, directories, files in os.walk(directory):
+    for root, directories, files in walk(directory):
         for filename in files:
             # 得到完全路径
-            filepath = os.path.join(root, filename)
+            filepath = path.join(root, filename)
             file_paths.append(filepath)
 
     return file_paths
 
 
 def main(directory):
-    today = datetime.date.today().strftime('%y%m%d')
+    today = date.today().strftime('%y%m%d')
 
     file_paths = get_all_file_paths(directory)
 
@@ -70,12 +77,12 @@ def main(directory):
     for file_name in file_paths:
         print(file_name)
 
-    with ZipFile('{}_{}.zip'.format(directory, today), 'w') as zip:
+    with ZipFile('{}_{}.zip'.format(directory, today), 'w') as zipp:
         for file in file_paths:
-            zip.write(file)
+            zipp.write(file)
 
     print('All files zipped successfully!')
-    time.sleep(2)
+    sleep(1)
     return None
 
 
