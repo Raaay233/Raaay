@@ -1,4 +1,7 @@
 """
+v1.3
+修复了只能保存打包文件夹的问题
+
 v1.2
 import方面进行优化，优化打包后大小
 try部分的错误类型判断更为精确
@@ -57,19 +60,21 @@ def save_path():
 
 def get_all_file_paths(directory):
     file_paths = []
-
-    # 把所有的文件夹以及子文件夹、以及文件全部搞出来
-    for root, directories, files in walk(directory):
-        for filename in files:
-            # 得到完全路径
-            filepath = path.join(root, filename)
-            file_paths.append(filepath)
+    if path.isfile(directory):
+        file_paths.append(directory)
+    else:
+        # 把所有的文件夹以及子文件夹、以及文件全部搞出来
+        for root, directories, files in walk(directory):
+            for filename in files:
+                # 得到完全路径
+                filepath = path.join(root, filename)
+                file_paths.append(filepath)
 
     return file_paths
 
 
 def main(directory):
-    today = date.today().strftime('%y%m%d')
+    today = date.today().strftime('%Y%m%d')
 
     file_paths = get_all_file_paths(directory)
 
@@ -83,7 +88,6 @@ def main(directory):
 
     print('All files zipped successfully!')
     sleep(1)
-    return None
 
 
 if __name__ == '__main__':
