@@ -1,9 +1,9 @@
 """
 v1.3
-修复了只能保存打包文件夹的问题
+添加打包单独文件的功能
 
 v1.2
-import方面进行优化，优化打包后大小
+import方面进行优化，优化打包exe后大小
 try部分的错误类型判断更为精确
 
 v1.1
@@ -41,14 +41,14 @@ def save_path():
         return directory
 
     except FileNotFoundError:
-        name = input('Please input the file name which you want to zip:\n')
+        name = input('Please input the file/folder‘s name which you want to zip:\n')
 
         n = count_ignore_character(name)
 
         path_exists, directory = is_exists(name)
 
         while name == '' or not path_exists or n == len(name):
-            name = input('The path IS NOT available! Please input the right file name!\n')
+            name = input('The path IS NOT available! Please input the right file/folder‘s name!\n')
             n = count_ignore_character(name)
 
             path_exists, directory = is_exists(name)
