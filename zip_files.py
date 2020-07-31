@@ -73,7 +73,7 @@ def get_all_file_paths(directory):
     return file_paths
 
 
-def main(directory):
+def zip_files(directory):
     today = date.today().strftime('%Y%m%d')
 
     file_paths = get_all_file_paths(directory)
@@ -92,4 +92,4 @@ def main(directory):
 
 if __name__ == '__main__':
     directory = save_path()
-    main(directory)
+    zip_files(directory)
