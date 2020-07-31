@@ -4,3 +4,6 @@
 
 ## change_pic
 - 将图片转换为txt文件
+
+## log
+- 在输出的同时写入log文件
