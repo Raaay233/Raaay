@@ -13,6 +13,9 @@ class Logger(object):
         self.log.write(message)
         self.log.flush()
 
+    def flush(self):
+        pass
+
 
 sys.stdout = Logger('test.log', sys.stdout)
 sys.stderr = Logger('test.log', sys.stderr)
